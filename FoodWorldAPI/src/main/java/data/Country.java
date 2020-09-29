@@ -1,8 +1,10 @@
 package data;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class Country {
+public class Country implements Serializable{
+	
 	private int iCountryID;
 	private String sName;
 	private String sFlag;

@@ -104,7 +104,13 @@
 	    <artifactId>jersey-media-json-jackson</artifactId>
 	    <version>2.27</version>
 	</dependency>
-
+	
+	<dependency>
+    	<groupId>jakarta.xml.bind</groupId>
+    	<artifactId>jakarta.xml.bind-api</artifactId>
+    	<version>2.3.2</version>
+	</dependency>
+	
 <!-- This is needed that your server can handle REST-class as a servlet.
 		e.g. the class org.glassfish.jersey.servlet.ServletContainer 
 		in the project's web.xml file can be found from this library 

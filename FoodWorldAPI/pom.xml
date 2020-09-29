@@ -131,6 +131,12 @@
 		<version>5.1.6</version>
 	</dependency>
 	
+	<dependency>
+		<groupId>com.zaxxer</groupId>
+		<artifactId>HikariCP</artifactId>
+		<version>3.3.0</version>
+	</dependency>
+	
 <!-- 
 	The next two dependencies are needed to be able to manage database with JPA. 
 		In addition to eclipselink, there are several other libraries, too. 

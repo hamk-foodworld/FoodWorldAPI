@@ -5,6 +5,8 @@ public class Ingredient {
 	private int iID;
 	private String sName;
 	private int iAmount;
+	private String sUnit;
+	
 	public int getiID() {
 		return iID;
 	}
@@ -23,12 +25,17 @@ public class Ingredient {
 	public void setiAmount(int iAmount) {
 		this.iAmount = iAmount;
 	}
+			
+	public String getsUnit() {
+		return sUnit;
+	}
+	public void setsUnit(String sUnit) {
+		this.sUnit = sUnit;
+	}
 	
 	@Override
 	public String toString() {
-		return "Ingredient [iID=" + iID + ", sName=" + sName + ", iAmount=" + iAmount + "]";
+		return "Ingredient [iID=" + iID + ", sName=" + sName + ", iAmount=" + iAmount + ", sUnit=" + sUnit + "]";
 	}
-	
-	
-	
+
 }

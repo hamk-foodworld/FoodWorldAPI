@@ -143,6 +143,12 @@
 		<version>3.3.0</version>
 	</dependency>
 	
+	<dependency>
+	    <groupId>com.google.cloud.sql</groupId>
+	    <artifactId>mysql-socket-factory</artifactId>
+	    <version>1.0.16</version>
+	</dependency>
+	
 <!-- 
 	The next two dependencies are needed to be able to manage database with JPA. 
 		In addition to eclipselink, there are several other libraries, too. 

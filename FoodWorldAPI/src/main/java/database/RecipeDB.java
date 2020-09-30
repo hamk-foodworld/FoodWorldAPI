@@ -62,8 +62,8 @@ public class RecipeDB {
 				// get Recipe from database
 				boolean firstRound = true;
 				Statement stmt = conn.createStatement();
-				String sSQL = "select * from Recipe r, Ingredient i where r.recipeID = i.recipeID and r.recipeID = ?";
-				
+				//String sSQL = "select * from Recipe r, Ingredient i where r.recipeID = i.recipeID and r.recipeID = ?";
+				String sSQL = "select * from Recipe r, Ingredient i, Unit u where r.recipeID = i.recipeID and i.unitID = u.id and r.recipeID = ?";
 				PreparedStatement pstmt;
 				ResultSet RS;
 				
@@ -86,6 +86,7 @@ public class RecipeDB {
 						i.setiID(RS.getInt("id"));
 						i.setsName(RS.getString("iname"));
 						i.setiAmount(RS.getInt("amount"));
+						i.setsUnit(RS.getString("uname"));
 						
 						IngredientList.add(i);
 					}

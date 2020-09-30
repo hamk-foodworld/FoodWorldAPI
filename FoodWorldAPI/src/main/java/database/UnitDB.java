@@ -23,7 +23,7 @@ public class UnitDB {
 				while (RS.next()) {
 					Unit u = new Unit();
 					u.setiID(RS.getInt("id"));
-					u.setsName(RS.getString("name"));
+					u.setsName(RS.getString("uname"));
 
 					UnitList.add(u);
 				}

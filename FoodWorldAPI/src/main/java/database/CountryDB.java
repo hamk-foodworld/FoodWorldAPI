@@ -27,7 +27,7 @@ public class CountryDB {
 				while (RS.next()) {
 					Country c = new Country();
 					c.setiCountryID(RS.getInt("countryID"));
-					c.setsName(RS.getString("name"));
+					c.setsName(RS.getString("cname"));
 					
 					if(RS.getString("flag")!= null) {
 						c.setsFlag(RS.getString("flag"));

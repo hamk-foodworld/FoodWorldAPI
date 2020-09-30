@@ -2,6 +2,7 @@ package data;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class Recipe {
 
@@ -19,6 +20,15 @@ public class Recipe {
 	private Date dtEntrydate;
 	private String sPic;
 	private byte[] byPicBlob;
+	
+	private List<Ingredient> ingredients;
+	
+	public List<Ingredient> getIngredients() {
+		return ingredients;
+	}
+	public void setIngredients(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
+	}
 	public int getiRecipeID() {
 		return iRecipeID;
 	}
@@ -110,8 +120,10 @@ public class Recipe {
 				+ ", sDescription=" + sDescription + ", iAmountPeople=" + iAmountPeople + ", iRating=" + iRating
 				+ ", sPreparation=" + sPreparation + ", byVegan=" + byVegan + ", byVegetarian=" + byVegetarian
 				+ ", byGluten=" + byGluten + ", byLactose=" + byLactose + ", dtEntrydate=" + dtEntrydate + ", sPic="
-				+ sPic + ", byPicBlob=" + Arrays.toString(byPicBlob) + "]";
+				+ sPic + ", byPicBlob=" + Arrays.toString(byPicBlob) + ", ingredients=" + ingredients + "]";
 	}
+	
+	
 	
 	
 }

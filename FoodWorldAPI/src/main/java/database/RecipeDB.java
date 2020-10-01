@@ -14,6 +14,7 @@ import java.util.List;
 
 import data.Ingredient;
 import data.Recipe;
+import data.Rating;
 
 import database.IngredientDB;
 
@@ -163,7 +164,7 @@ public class RecipeDB {
 	/**
 	 * Receive the input data of the users to create a new recipe
 	 * @param Recipe object
-	 * @return null
+	 * @return new recipe object but the recipeID is not correct
 	 */
 	
 	public static Recipe addJsonRecipe(Recipe r) {
@@ -255,20 +256,9 @@ public class RecipeDB {
 				//pstmt.setInt(4, unit);
 				
 				
-				pstmt.execute();
-				//pstmt.addBatch();				
+				pstmt.execute();				
 			}
-			
-			/*int [] numUpdates=pstmt.executeBatch();
-			  for (int i=0; i < numUpdates.length; i++) {
-			    if (numUpdates[i] == -2)
-			      System.out.println("Execution " + i + 
-			        ": unknown number of rows updated");
-			    else
-			      System.out.println("Execution " + i + 
-			        "successful: " + numUpdates[i] + " rows updated");
-			  }*/
-			//conn.commit();
+
 			conn.close();
 			return true;
 			
@@ -351,8 +341,38 @@ public class RecipeDB {
 			
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 		
 		return iAutoIncrement;
 	}
+	
+	/**
+	 * Increase or Decrease rating of a recipe by pressing the heart icon
+	 * isbState: true => Like / false => dislike 
+	 * @param object of Rating have bState and iRecipeID
+	 */	
+	public static void setRating(Rating ra) {
+		Connection conn = DB.getConnection(); 
+		String sSQL = "Update Recipe set rating = rating + ? where recipeID = ?";
+		int like = 0;
+		
+		like = ((ra.isbState()) ? 1 : -1);
+		
+		PreparedStatement pstmt;
+		
+		try {
+			pstmt = conn.prepareStatement(sSQL);
+			pstmt.setInt(1, like);
+			pstmt.setInt(2, ra.getiRecipeID());
+			pstmt.execute();
+			
+			conn.close();			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		//	return getRating(iRecipeP); 
+	}
+	
 }

@@ -20,6 +20,7 @@ import data.Country;
 import data.Recipe;
 import data.Ingredient;
 import data.Unit;
+import data.Rating;
 
 @Path ("/foodservice")
 public class FoodWorldService {
@@ -85,7 +86,15 @@ public class FoodWorldService {
 		RecipeDB.addJsonRecipe(r);		
 		return r;
 	}
-
+		
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/addRating")
+	public void setRating(Rating ra) {
+		System.out.println("setRecipe???");
+		RecipeDB.setRating(ra);
+	}
 	
 	//	Ingredient
 	@GET

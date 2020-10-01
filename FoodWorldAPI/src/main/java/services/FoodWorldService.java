@@ -17,6 +17,7 @@ import database.IngredientDB;
 import database.UnitDB;
 
 import data.Country;
+import data.FavRecipe;
 import data.Recipe;
 import data.Ingredient;
 import data.Unit;
@@ -95,6 +96,20 @@ public class FoodWorldService {
 		System.out.println("setRecipe???");
 		RecipeDB.setRating(ra);
 	}
+	
+	
+	//	Need to discuss if it is okay...
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)//Method returns object as a JSON string
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/getFavRecipe")
+	public ArrayList<Recipe> getFavRecipeList(List<FavRecipe> favRecipeListP) {
+		System.out.println("GetFavRecipe??");
+		ArrayList<Recipe> recipeList = RecipeDB.getFavRecipe(favRecipeListP);
+		
+		return recipeList;	
+	}
+	
 	
 	//	Ingredient
 	@GET

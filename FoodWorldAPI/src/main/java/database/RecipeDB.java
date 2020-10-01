@@ -15,6 +15,7 @@ import java.util.List;
 import data.Ingredient;
 import data.Recipe;
 import data.Rating;
+import data.FavRecipe;
 
 import database.IngredientDB;
 
@@ -128,7 +129,7 @@ public class RecipeDB {
 				// get Recipe from database				
 				//Statement stmt = conn.createStatement();
 				String sSQL = "select *\r\n" + 
-						"from Recipe r, Country c, Countryrecipe cr\r\n" + 
+						"from Recipe r, Country c, CountryRecipe cr\r\n" + 
 						"where r.recipeID = cr.recipeID and\r\n" + 
 						"c.countryID = cr.countryID and \r\n" + 
 						"c.countryID = ?";
@@ -140,6 +141,7 @@ public class RecipeDB {
 					pstmt.setInt(1, id);
 										
 					RS = pstmt.executeQuery();
+					
 					while(RS.next()) {
 						Recipe r = new Recipe();
 						r = getRecipe(RS);
@@ -152,9 +154,15 @@ public class RecipeDB {
 				}
 				
 				conn.close();
+				
 			} else {
 				System.out.println("No connection to database!");
 			}
+			
+			
+			
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -287,6 +295,50 @@ public class RecipeDB {
 			e.printStackTrace();
 		}  
 		return false;		
+	}
+	
+	public static ArrayList<Recipe> getFavRecipe(List<FavRecipe> favRecipeList){
+		Connection conn = DB.getConnection(); 
+		String sSQL = "select * from Recipe where recipeID in (?)";
+		String sRecipeIDList = "";
+		ArrayList<Recipe> RecipeList = new ArrayList<>(); 
+		
+		if(favRecipeList.size() <0 ) return null;
+		
+		for(int i = 0; i < favRecipeList.size(); i ++) {
+			sRecipeIDList += String.valueOf(favRecipeList.get(i).getiRecipeID());
+			sRecipeIDList += ",";
+		}
+		
+		//	Clear the last char ','
+		sRecipeIDList = sRecipeIDList.substring(0, sRecipeIDList.length()-1);
+		
+		PreparedStatement pstmt;
+		ResultSet RS;
+		
+		try {
+			pstmt = conn.prepareStatement(sSQL);
+			pstmt.setString(1, sRecipeIDList);
+								
+			RS = pstmt.executeQuery();
+			
+			//	Recipe r = new Recipe();
+			
+			while (RS.next()) {
+				Recipe r = new Recipe();
+				r = getRecipe(RS);				
+				RecipeList.add(r);
+			}
+			pstmt.close();
+			RS.close();					
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return RecipeList;
 	}
 	
 	

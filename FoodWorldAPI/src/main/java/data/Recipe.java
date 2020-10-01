@@ -18,8 +18,11 @@ public class Recipe {
 	private byte byGluten;
 	private byte byLactose;
 	private Date dtEntrydate;
+	private String sEntrydate;
 	private String sPic;
 	private byte[] byPicBlob;
+	
+	private int iCountryID;
 	
 	private List<Ingredient> ingredients;
 	
@@ -47,6 +50,7 @@ public class Recipe {
 	public void setiCookingTime(int iCookingTime) {
 		this.iCookingTime = iCookingTime;
 	}
+	
 	public String getsDescription() {
 		return sDescription;
 	}
@@ -112,6 +116,20 @@ public class Recipe {
 	}
 	public void setByPicBlob(byte[] byPicBlob) {
 		this.byPicBlob = byPicBlob;
+	}	
+	
+	public String getsEntrydate() {
+		return sEntrydate;
+	}
+	public void setsEntrydate(String sEntrydate) {
+		this.sEntrydate = sEntrydate;
+	}
+	
+	public int getiCountryID() {
+		return iCountryID;
+	}
+	public void setiCountryID(int iCountryID) {
+		this.iCountryID = iCountryID;
 	}
 	
 	@Override
@@ -119,11 +137,9 @@ public class Recipe {
 		return "Recipe [iRecipeID=" + iRecipeID + ", sName=" + sName + ", iCookingTime=" + iCookingTime
 				+ ", sDescription=" + sDescription + ", iAmountPeople=" + iAmountPeople + ", iRating=" + iRating
 				+ ", sPreparation=" + sPreparation + ", byVegan=" + byVegan + ", byVegetarian=" + byVegetarian
-				+ ", byGluten=" + byGluten + ", byLactose=" + byLactose + ", dtEntrydate=" + dtEntrydate + ", sPic="
-				+ sPic + ", byPicBlob=" + Arrays.toString(byPicBlob) + ", ingredients=" + ingredients + "]";
+				+ ", byGluten=" + byGluten + ", byLactose=" + byLactose + ", dtEntrydate=" + dtEntrydate
+				+ ", sEntrydate=" + sEntrydate + ", sPic=" + sPic + ", byPicBlob=" + Arrays.toString(byPicBlob)
+				+ ", iCountryID=" + iCountryID + ", ingredients=" + ingredients + "]";
 	}
-	
-	
-	
 	
 }

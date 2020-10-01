@@ -2,19 +2,23 @@ package database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import data.Ingredient;
 import data.Recipe;
 
+import database.IngredientDB;
 
 public class RecipeDB {
+	private static String sTABLE_SCHEMA = "foodworld";
 	/**
 	 * Returns an ArrayList of all Recipe
 	 * @return all Recipe in an ArrayList
@@ -22,8 +26,6 @@ public class RecipeDB {
 	public static ArrayList<Recipe> GetRecipe() {
 		ArrayList<Recipe> RecipeList = new ArrayList<>();
 		Connection conn = DB.getConnection();
-		
-		//Date dtToday = new Date();
 		
 		try {
 			if (conn != null) {
@@ -119,9 +121,7 @@ public class RecipeDB {
 	public static ArrayList<Recipe> getCountryRecipe(int id){
 		ArrayList<Recipe> RecipeList = new ArrayList<>();
 		Connection conn = DB.getConnection();
-		
-		//Date dtToday = new Date();
-		
+
 		try {
 			if (conn != null) {
 				// get Recipe from database				
@@ -160,6 +160,151 @@ public class RecipeDB {
 		return RecipeList;		
 	}
 	
+	/**
+	 * Receive the input data of the users to create a new recipe
+	 * @param Recipe object
+	 * @return null
+	 */
+	
+	public static Recipe addJsonRecipe(Recipe r) {
+		Date now = new Date();
+		String pattern = "yyyy-MM-dd";
+		SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+        String sToday = formatter.format(now);
+                
+        System.out.println("Systemtime:" + now.toLocaleString());
+        System.out.println("Date now: " + now);
+        System.out.println("String sToday: " + sToday);
+        
+		String sSQLRecipe="insert into Recipe"
+		+ "(name,cookingTime,description,amountPeople,preparation,"
+		+ "vegan,vegetarian,gluten,lactose,entrydate,pic,rating) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+		
+		int iRecipeID;
+		
+		Connection conn = DB.getConnection();
+		
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement(sSQLRecipe);
+			System.out.println("RecipeID: " + r.getiRecipeID());
+			pstmt.setString(1, r.getsName());
+			pstmt.setInt(2, r.getiCookingTime());
+			pstmt.setString(3, r.getsDescription());
+			pstmt.setInt(4, r.getiAmountPeople());
+			pstmt.setString(5, r.getsPreparation());
+			pstmt.setByte(6, r.getByVegan());
+			pstmt.setByte(7, r.getByVegetarian());
+			pstmt.setByte(8, r.getByGluten());
+			pstmt.setByte(9, r.getByLactose());
+			pstmt.setString(10, (sToday));
+			pstmt.setString(11, r.getsPic());
+			pstmt.setInt(12, 0);
+			pstmt.execute();
+			
+			//	Get RecipeID
+			iRecipeID = getAutoIncrementValue("Recipe");
+			System.out.println("Neue RecipeID: " + iRecipeID + "DBRecipeID: " + r.getiRecipeID());
+			
+			if(! addToIngredients(r.getIngredients(), iRecipeID)) {
+				System.out.println("Error in AddIngredients!!");
+			}			
+			
+			if(! addToMatchingTable(iRecipeID, r.getiCountryID())) {
+				System.out.println("Error in AddMatchingTable!!");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (conn!=null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return r;
+	}
+	/**
+	 * Add all ingredients of one recipe in the database
+	 * @param ingListP List of all Ingredients in the object recipe
+	 * @param iReciptID
+	 * @return true => success false => error
+	 * @throws SQLException 
+	 */
+	public static boolean addToIngredients(List<Ingredient> ingListP, int iReciptID){
+		Connection conn = DB.getConnection();
+		//Connection conn = DB.getConnectionCommit();
+		String sSQL = "insert into Ingredient (iname,amount,recipeID,unitID) values (?,?,?,?)";
+		PreparedStatement pstmt;
+		
+		try {
+			pstmt = conn.prepareStatement(sSQL);
+			Iterator<Ingredient> it = ingListP.iterator();
+			while(it.hasNext()){
+				Ingredient i = it.next();
+				pstmt.setString(1, i.getsName());
+				pstmt.setInt(2, i.getiAmount());
+				pstmt.setInt(3, iReciptID);
+				pstmt.setInt(4, i.getiUnit());
+				
+				//Integer unit = Integer.parseInt(i.getsUnit());
+				//pstmt.setInt(4, unit);
+				
+				
+				pstmt.execute();
+				//pstmt.addBatch();				
+			}
+			
+			/*int [] numUpdates=pstmt.executeBatch();
+			  for (int i=0; i < numUpdates.length; i++) {
+			    if (numUpdates[i] == -2)
+			      System.out.println("Execution " + i + 
+			        ": unknown number of rows updated");
+			    else
+			      System.out.println("Execution " + i + 
+			        "successful: " + numUpdates[i] + " rows updated");
+			  }*/
+			//conn.commit();
+			conn.close();
+			return true;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		
+		return false;
+	}
+	
+	public static boolean addToMatchingTable(int iRecipeIDP, int iCountryIDP) {
+		Connection conn = DB.getConnection(); 
+		String sSQL = "insert into CountryRecipe (countryID,recipeID) values (?,?)";
+		PreparedStatement pstmt;
+		
+		try {
+			pstmt = conn.prepareStatement(sSQL);
+			pstmt.setInt(1, iCountryIDP);
+			pstmt.setInt(2, iRecipeIDP);
+			pstmt.execute();
+			conn.close();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		return false;		
+	}
+	
+	
+	/**
+	 * Get one object of recipe
+	 * @param ResultSet RS
+	 * @return object recipe
+	 */
 	private static Recipe getRecipe(ResultSet RS) {
 		Recipe r = new Recipe();
 		try {			
@@ -181,5 +326,33 @@ public class RecipeDB {
 			ex.printStackTrace();
 		}
 		return r;
+	}
+	
+	private static int getAutoIncrementValue(String sTableNameP) {
+		Connection conn = DB.getConnection(); 
+		String sSQL = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
+		
+		PreparedStatement pstmt;
+		ResultSet RS;
+		int iAutoIncrement = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(sSQL);
+			pstmt.setString(1, sTABLE_SCHEMA);
+			pstmt.setString(2, sTableNameP);
+			System.out.println("Table Schema: " + sTABLE_SCHEMA + " / TableName: " + sTableNameP);				
+			RS = pstmt.executeQuery();
+			
+			while(RS.next()) {
+				//	-1 catch the right Auto_Increment value
+				iAutoIncrement = RS.getInt("AUTO_INCREMENT") - 1;
+			}
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return iAutoIncrement;
 	}
 }

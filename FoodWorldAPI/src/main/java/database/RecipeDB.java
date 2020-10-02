@@ -94,6 +94,8 @@ public class RecipeDB {
 						i.setsName(RS.getString("iname"));
 						i.setiAmount(RS.getInt("amount"));
 						i.setsUnit(RS.getString("uname"));
+						i.setsAcronym(RS.getString("acronym"));
+						//i.set setsAcronym(RS.getString("sAcronym"));
 						
 						IngredientList.add(i);
 					}

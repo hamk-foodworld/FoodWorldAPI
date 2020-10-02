@@ -7,6 +7,7 @@ public class Ingredient {
 	private int iAmount;
 	private int iUnit;
 	private String sUnit;
+	private String sAcronym;
 	
 	
 	public int getiID() {
@@ -43,9 +44,17 @@ public class Ingredient {
 	}
 	
 	
+	
+	
+	public String getsAcronym() {
+		return sAcronym;
+	}
+	public void setsAcronym(String sAcronym) {
+		this.sAcronym = sAcronym;
+	}
 	@Override
 	public String toString() {
-		return "Ingredient [iID=" + iID + ", sName=" + sName + ", iAmount=" + iAmount + ", iUnit=" + iUnit + ", sUnit =" + sUnit + "]";
+		return "Ingredient [iID=" + iID + ", sName=" + sName + ", iAmount=" + iAmount + ", iUnit=" + iUnit + ", sUnit =" + sUnit + ",sAcronym=" + sAcronym+"]";
 	}
 
 }

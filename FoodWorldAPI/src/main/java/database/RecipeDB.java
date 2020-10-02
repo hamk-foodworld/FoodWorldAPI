@@ -2,6 +2,7 @@ package database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Array;
 import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import data.Ingredient;
 import data.Recipe;
@@ -18,6 +20,7 @@ import data.Rating;
 import data.FavRecipe;
 
 import database.IngredientDB;
+
 
 public class RecipeDB {
 	private static String sTABLE_SCHEMA = "foodworld";
@@ -296,51 +299,39 @@ public class RecipeDB {
 		}  
 		return false;		
 	}
-	
-	public static ArrayList<Recipe> getFavRecipe(List<FavRecipe> favRecipeList){
+	/**
+	 * Recieve a list of recipeID (Integer) and returns an ArrayList of recipe
+	 * @param iList recipeID in a integer list
+	 * @return ArrayList of all favorite recipe
+	 */
+	public static ArrayList<Recipe> getFav(List<Integer> iList){
+		ArrayList<Recipe> RecipeList = new ArrayList<>(); 
 		Connection conn = DB.getConnection(); 
 		String sSQL = "select * from Recipe where recipeID in (?)";
-		String sRecipeIDList = "";
-		ArrayList<Recipe> RecipeList = new ArrayList<>(); 
+		String sqlIN = iList.stream()
+				.map(x -> String.valueOf(x))
+				.collect(Collectors.joining(",", "(", ")"));
 		
-		if(favRecipeList.size() <0 ) return null;
-		
-		for(int i = 0; i < favRecipeList.size(); i ++) {
-			sRecipeIDList += String.valueOf(favRecipeList.get(i).getiRecipeID());
-			sRecipeIDList += ",";
-		}
-		
-		//	Clear the last char ','
-		sRecipeIDList = sRecipeIDList.substring(0, sRecipeIDList.length()-1);
-		
+		sSQL = sSQL.replace("(?)", sqlIN);
 		PreparedStatement pstmt;
 		ResultSet RS;
 		
 		try {
 			pstmt = conn.prepareStatement(sSQL);
-			pstmt.setString(1, sRecipeIDList);
-								
 			RS = pstmt.executeQuery();
 			
-			//	Recipe r = new Recipe();
-			
-			while (RS.next()) {
+			while(RS.next()) {
 				Recipe r = new Recipe();
 				r = getRecipe(RS);				
 				RecipeList.add(r);
 			}
-			pstmt.close();
-			RS.close();					
-			conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}catch(SQLException ex) {
+			ex.printStackTrace();
 		}
 		
 		
 		return RecipeList;
 	}
-	
 	
 	/**
 	 * Get one object of recipe

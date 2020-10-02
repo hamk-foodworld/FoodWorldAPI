@@ -96,16 +96,14 @@ public class FoodWorldService {
 		System.out.println("setRecipe???");
 		RecipeDB.setRating(ra);
 	}
-	
-	
-	//	Need to discuss if it is okay...
+			
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)//Method returns object as a JSON string
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/getFavRecipe")
-	public ArrayList<Recipe> getFavRecipeList(List<FavRecipe> favRecipeListP) {
-		System.out.println("GetFavRecipe??");
-		ArrayList<Recipe> recipeList = RecipeDB.getFavRecipe(favRecipeListP);
+	public ArrayList<Recipe> getFavRecipeListI(List<Integer> favRecipeListP) {
+		System.out.println("GetFavRecipeTest??");
+		ArrayList<Recipe> recipeList = RecipeDB.getFav(favRecipeListP);
 		
 		return recipeList;	
 	}

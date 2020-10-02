@@ -15,6 +15,7 @@ import database.CountryDB;
 import database.RecipeDB;
 import database.IngredientDB;
 import database.UnitDB;
+import database.CountryRecipeDB;
 
 import data.Country;
 import data.FavRecipe;
@@ -22,6 +23,7 @@ import data.Recipe;
 import data.Ingredient;
 import data.Unit;
 import data.Rating;
+import data.CountryRecipe;
 
 @Path ("/foodservice")
 public class FoodWorldService {
@@ -76,6 +78,18 @@ public class FoodWorldService {
 		ArrayList<Recipe> recipeList = RecipeDB.getCountryRecipe(id);
 
 		return recipeList;	
+	}
+	
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)//Method returns object as a JSON string
+	@Path("/getCountryRecipe")
+	public List<CountryRecipe> getCountryRecipeListAll() {
+		
+		System.out.println("GetCountryRecipeListAll??");
+		ArrayList<CountryRecipe> recipeListAll = CountryRecipeDB.getCountryRecipe();
+
+		return recipeListAll;	
 	}
 	
 	@POST

@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import data.CountryRecipe;
+import data.Unit;
 
 public class CountryRecipeDB {
 	/**
@@ -35,4 +36,36 @@ public class CountryRecipeDB {
 		}
 		return true;
 	}
+	
+	/**
+	 * Get a list of CountryRecipe
+	 * @return a list of CountryRecipe
+	 */
+	
+	public static ArrayList<CountryRecipe> getCountryRecipe(){
+		Connection conn = DB.getConnection();		
+		ArrayList<CountryRecipe> countryRecipeList = new ArrayList<>();
+		try {
+			if (conn != null) {
+				// get Unit from database				
+				Statement stmt = conn.createStatement();
+				ResultSet RS = stmt.executeQuery("select * from CountryRecipe");
+				System.out.println("Connection Succeed");
+				while (RS.next()) {
+					CountryRecipe cr = new CountryRecipe();
+					cr.setiCountryID(RS.getInt("countryID"));
+					cr.setiRecipeID(RS.getInt("recipeID"));
+
+					countryRecipeList.add(cr);
+				}
+				conn.close();
+			} else {
+				System.out.println("No connection to database!");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return countryRecipeList;
+	}
+	
 }

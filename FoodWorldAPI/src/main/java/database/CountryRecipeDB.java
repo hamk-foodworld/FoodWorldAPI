@@ -68,4 +68,33 @@ public class CountryRecipeDB {
 		return countryRecipeList;
 	}
 	
+	/**
+	 * Returns an ArrayList of countries with the numbers included recipes
+	 * @return ArrayList<CountryRecipe> with all included recipes (iAnzahl)
+	 */
+	public static ArrayList<CountryRecipe> getCountryRecipeZahl(){
+		Connection conn = DB.getConnection();		
+		ArrayList<CountryRecipe> countryRecipeList = new ArrayList<>();
+		try {
+			if (conn != null) {
+				// get Unit from database				
+				Statement stmt = conn.createStatement();
+				ResultSet RS = stmt.executeQuery("select countryID, count(*) from CountryRecipe group by countryID order by countryID");
+				System.out.println("Connection Succeed");
+				while (RS.next()) {
+					CountryRecipe cr = new CountryRecipe();
+					cr.setiCountryID(RS.getInt("countryID"));
+					//cr.setiRecipeID(RS.getInt("recipeID"));
+					cr.setiAnzahl(RS.getInt("count(*)"));
+					countryRecipeList.add(cr);
+				}
+				conn.close();
+			} else {
+				System.out.println("No connection to database!");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return countryRecipeList;
+	}
 }

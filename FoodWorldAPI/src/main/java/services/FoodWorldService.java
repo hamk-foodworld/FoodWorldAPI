@@ -92,6 +92,17 @@ public class FoodWorldService {
 		return recipeListAll;	
 	}
 	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)//Method returns object as a JSON string
+	@Path("/getCountryRecipeNumber")
+	public List<CountryRecipe> getCountryRecipeListZahl() {
+		
+		System.out.println("GetCountryRecipeListTest??");
+		ArrayList<CountryRecipe> recipeListAll = CountryRecipeDB.getCountryRecipeZahl();
+
+		return recipeListAll;	
+	}
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

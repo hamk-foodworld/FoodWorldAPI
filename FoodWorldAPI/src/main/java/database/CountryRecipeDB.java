@@ -38,41 +38,10 @@ public class CountryRecipeDB {
 	}
 	
 	/**
-	 * Get a list of CountryRecipe
-	 * @return a list of CountryRecipe
-	 */
-	
-	public static ArrayList<CountryRecipe> getCountryRecipe(){
-		Connection conn = DB.getConnection();		
-		ArrayList<CountryRecipe> countryRecipeList = new ArrayList<>();
-		try {
-			if (conn != null) {
-				// get Unit from database				
-				Statement stmt = conn.createStatement();
-				ResultSet RS = stmt.executeQuery("select * from CountryRecipe");
-				System.out.println("Connection Succeed");
-				while (RS.next()) {
-					CountryRecipe cr = new CountryRecipe();
-					cr.setiCountryID(RS.getInt("countryID"));
-					cr.setiRecipeID(RS.getInt("recipeID"));
-
-					countryRecipeList.add(cr);
-				}
-				conn.close();
-			} else {
-				System.out.println("No connection to database!");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return countryRecipeList;
-	}
-	
-	/**
 	 * Returns an ArrayList of countries with the numbers included recipes
 	 * @return ArrayList<CountryRecipe> with all included recipes (iAnzahl)
 	 */
-	public static ArrayList<CountryRecipe> getCountryRecipeZahl(){
+	public static ArrayList<CountryRecipe> getCountryRecipeNumber(){
 		Connection conn = DB.getConnection();		
 		ArrayList<CountryRecipe> countryRecipeList = new ArrayList<>();
 		try {
@@ -85,7 +54,7 @@ public class CountryRecipeDB {
 					CountryRecipe cr = new CountryRecipe();
 					cr.setiCountryID(RS.getInt("countryID"));
 					//cr.setiRecipeID(RS.getInt("recipeID"));
-					cr.setiAnzahl(RS.getInt("count(*)"));
+					cr.setiNumber(RS.getInt("count(*)"));
 					countryRecipeList.add(cr);
 				}
 				conn.close();

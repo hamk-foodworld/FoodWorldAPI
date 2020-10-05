@@ -3,7 +3,7 @@ package data;
 public class CountryRecipe {
 	private int iCountryID;
 	private int iRecipeID;
-	private int iAnzahl;
+	private int iNumber;
 	
 	public int getiCountryID() {
 		return iCountryID;
@@ -18,15 +18,15 @@ public class CountryRecipe {
 		this.iRecipeID = iRecipeID;
 	}		
 	
-	public int getiAnzahl() {
-		return iAnzahl;
+	public int getiNumber() {
+		return iNumber;
 	}
-	public void setiAnzahl(int iAnzahl) {
-		this.iAnzahl = iAnzahl;
+	public void setiNumber(int iNumber) {
+		this.iNumber = iNumber;
 	}
 	@Override
 	public String toString() {
-		return "CountryRecipe [iCountryID=" + iCountryID + ", iRecipeID=" + iRecipeID + ", iAnzahl="+ iAnzahl+"]";
+		return "CountryRecipe [iCountryID=" + iCountryID + ", iRecipeID=" + iRecipeID + ", iNumber="+ iNumber+"]";
 	}
 	
 	

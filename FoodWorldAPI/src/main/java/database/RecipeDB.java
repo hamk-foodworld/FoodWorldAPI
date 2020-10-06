@@ -92,7 +92,7 @@ public class RecipeDB {
 						Ingredient i = new Ingredient();
 						i.setiID(RS.getInt("id"));
 						i.setsName(RS.getString("iname"));
-						i.setiAmount(RS.getInt("amount"));
+						i.setiAmount(RS.getFloat("amount"));
 						i.setsUnit(RS.getString("uname"));
 						i.setsAcronym(RS.getString("acronym"));
 						//i.set setsAcronym(RS.getString("sAcronym"));
@@ -261,7 +261,7 @@ public class RecipeDB {
 			while(it.hasNext()){
 				Ingredient i = it.next();
 				pstmt.setString(1, i.getsName());
-				pstmt.setInt(2, i.getiAmount());
+				pstmt.setFloat(2, i.getiAmount());
 				pstmt.setInt(3, iReciptID);
 				pstmt.setInt(4, i.getiUnit());
 				

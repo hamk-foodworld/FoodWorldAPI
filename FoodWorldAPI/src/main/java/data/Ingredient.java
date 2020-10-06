@@ -4,7 +4,8 @@ public class Ingredient {
 
 	private int iID;
 	private String sName;
-	private int iAmount;
+	//private int iAmount;
+	private float iAmount;
 	private int iUnit;
 	private String sUnit;
 	private String sAcronym;
@@ -22,11 +23,11 @@ public class Ingredient {
 	public void setsName(String sName) {
 		this.sName = sName;
 	}
-	public int getiAmount() {
+	public float getiAmount() {
 		return iAmount;
 	}
-	public void setiAmount(int iAmount) {
-		this.iAmount = iAmount;
+	public void setiAmount(float f) {
+		this.iAmount = f;
 	}
 			
 	public int getiUnit() {

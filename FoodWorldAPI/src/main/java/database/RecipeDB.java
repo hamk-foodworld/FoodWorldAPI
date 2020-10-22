@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 import data.Ingredient;
 import data.Recipe;
 import data.Rating;
@@ -197,7 +198,7 @@ public class RecipeDB {
 		int iRecipeID;
 		
 		Connection conn = DB.getConnection();
-		
+		if(conn == null) return null;
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement(sSQLRecipe);

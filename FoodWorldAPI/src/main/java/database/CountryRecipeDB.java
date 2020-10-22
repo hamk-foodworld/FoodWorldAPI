@@ -23,7 +23,7 @@ public class CountryRecipeDB {
 			if (conn != null) {
 				PreparedStatement stmt = conn.prepareStatement("insert into CountryRecipe(countryID, recipeID) values(?,?)");
 				stmt.setInt(1, iCountryIDP);
-				stmt.setInt(1, iRecipeIDP);
+				stmt.setInt(2, iRecipeIDP);
 
 				int i = stmt.executeUpdate();
 				conn.close();
